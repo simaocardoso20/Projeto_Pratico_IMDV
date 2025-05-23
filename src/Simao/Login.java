@@ -1,10 +1,12 @@
+package Simao;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class Login {
 
-    // Login Admin
+    // Simao.Login Admin
 
     public static boolean loginAdmin(Scanner sc) throws FileNotFoundException {
         System.out.print("Username: ");
@@ -14,7 +16,7 @@ public class Login {
         String password = sc.nextLine();
 
         if (validarAcessoAdmin(username, password)) {
-            System.out.println("Login efetuado com sucesso.");
+            System.out.println("Simao.Login efetuado com sucesso.");
             return true;
         } else {
             System.out.println("Username ou Password inválido\n");

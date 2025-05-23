@@ -1,3 +1,5 @@
+package Simao;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -23,21 +25,36 @@ public class Menu_Admin {
 
     }
 
+    // Imprimir ficheiro lista de filmes
+    public static void imprimirFicheiro(String caminho) throws FileNotFoundException {
 
-    public static String[][] listaParaMatriz(String caminho) throws FileNotFoundException {
+        File ficheiro = new File(caminho);
+        Scanner sc = new Scanner(ficheiro);
 
-        // Saber quantos filmes tem o ficheiro (retirar o cabeçalho (-1))
-        int numeroFilmes = contarLinhas(caminho);
+        while (sc.hasNextLine()) {
+            String linha = sc.nextLine();
+            System.out.println(linha);
+        }
+
+    }
+
+
+    public static String[][] listaParaMatriz(String matriz) throws FileNotFoundException {
+
+        // Retirar linha do cabeçalho
+        int listaFilmes = contarLinhas(matriz) -1;
 
         // Criar uma matriz com o tamanho certo
-        String[][] matrizCompleta = new String[numeroFilmes][8];
+        String[][] matrizCompleta = new String[listaFilmes][8];
 
         // Criar as ferramentas de leitura
-        File ficheiro = new File(caminho);
+        File ficheiro = new File(matriz);
         Scanner sc = new Scanner(ficheiro);
 
         // Controlar o numero de filmes
         int numFilmeAtual = 0;
+
+        sc.nextLine();
 
         // Ler o ficheiro linha à linha
         while (sc.hasNextLine()) {
@@ -47,6 +64,7 @@ public class Menu_Admin {
             for (int i = 0; i < matrizCompleta[0].length; i++) {
                 matrizCompleta[numFilmeAtual][i] = linhaSeparada[i];
             }
+
             // Adicionar um filme a atual variável
             numFilmeAtual++;
 
@@ -61,20 +79,49 @@ public class Menu_Admin {
 
     // Imprimir matriz
     public static void imprimirMatriz(String[][] matriz) {
-        System.out.println("\n========== Top Movies ==============");
 
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz[i].length; j++) {
-                System.out.print(matriz[i][j]);
+                System.out.print(matriz[i][j] + " | ");
             }
             System.out.println();
         }
-
-        System.out.println("=====================================");
     }
 
 
-    public static void menu(String[][] matriz) {
+    // Guardar em memória os estúdios da matriz evitando repetições
+    public static void imprimirEstudiosUnicos(String[][] matriz) {
+
+        String[] estudiosUnicos = new String[matriz.length];
+        int totalUnicos = 0;
+
+        for (int i = 0; i < matriz.length; i++) {
+            String estudioAtual = matriz[i][5];
+            boolean estudioRepetido = false;
+
+            for (int contador = 0; contador < totalUnicos; contador++) {
+                if (estudiosUnicos[contador].equals(estudioAtual)) {
+                    estudioRepetido = true;
+                    break;
+                }
+            }
+
+            if (!estudioRepetido) {
+                estudiosUnicos[totalUnicos] = estudioAtual;
+                totalUnicos++;
+            }
+        }
+
+
+        System.out.println("\nEstúdios encontrados:");
+        for (int i = 0; i < totalUnicos; i++) {
+            System.out.println("> " +estudiosUnicos[i]);
+        }
+    }
+
+
+
+    public static void menu(String[][] matriz, String caminho) throws FileNotFoundException {
 
         Scanner input = new Scanner(System.in);
 
@@ -96,18 +143,24 @@ public class Menu_Admin {
             switch (opcao) {
                 case 1:
                     System.out.println("_*_*_*_*_*_ The Best Movies Ever _*_*_*_*_*_ ");
-
+                    imprimirFicheiro(caminho);
 
                     break;
 
                 case 2:
-                    System.out.println("_*_*_*_*_*_ Pesquisar por Artista _*_*_*_*_*_ ");
+                    System.out.println("_*_*_*_*_*_ Total de Ratings _*_*_*_*_*_ ");
 
+                    int totalRatings = matriz.length;
+                    System.out.println("> " + totalRatings);
 
                     break;
 
                 case 3:
-                    System.out.println("_*_*_*_*_*_ Música Mais Longa _*_*_*_*_*_ ");
+
+                    System.out.println("_*_*_*_*_*_ Lista de Estúdios _*_*_*_*_*_ ");
+
+                    imprimirEstudiosUnicos(matriz);
+
 
                     break;
 
@@ -129,9 +182,15 @@ public class Menu_Admin {
     //Main
     public static void main(String[] args) throws FileNotFoundException {
 
-        String caminhoCSV = "IMDV/IMDV.csv";
+        String caminho = "IMDV/IMDV.csv";
         String[][] matriz = listaParaMatriz("IMDV/IMDV.csv");
-        imprimirMatriz(matriz);
+
+        imprimirFicheiro(caminho);
+
+        menu(matriz, caminho);
+
+
+
 
     }
 }
