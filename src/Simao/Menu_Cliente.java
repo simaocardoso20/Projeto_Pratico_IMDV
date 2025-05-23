@@ -52,6 +52,25 @@ public class Menu_Cliente {
                         opcaoMenuArtes = input.nextInt();
                         input.nextLine(); // Limpar o buffer
 
+                        String caminhoArte = "";
+
+                        switch (opcaoMenuArtes) {
+                            case 1: caminhoArte = "IMDV/CatalogoGrafico/HarryPotter.txt"; break;
+                            case 2: caminhoArte = "IMDV/CatalogoGrafico/Interstellar.txt"; break;
+                            case 3: caminhoArte = "IMDV/CatalogoGrafico/LordOfTheRings.txt"; break;
+                            case 4: caminhoArte = "IMDV/CatalogoGrafico/StarWars.txt"; break;
+                            case 5: System.out.println("Voltando ao menu principal..."); break;
+                            default: System.out.println("Opção inválida. Tente novamente."); break;
+                        }
+
+                        if (!caminhoArte.isEmpty()) {
+                            mostrarArteTxt(caminhoArte);
+                        }
+
+                    } while (opcaoMenuArtes != 5);
+
+                    break;
+
 
 
                     break;
