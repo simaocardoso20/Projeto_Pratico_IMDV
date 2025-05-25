@@ -12,6 +12,11 @@ public class Menu_Admin {
         File ficheiro = new File(caminho);
         Scanner sc = new Scanner(ficheiro);
 
+        // Como vou usar esta função e não preciso do cabeçalho, peço para a passar à frente a 1ª linha para depois poder entrar num ciclo while.
+        if (sc.hasNextLine()) {
+            sc.nextLine();
+        }
+
         int contagemLinhas = 0;
 
         while (sc.hasNextLine()) {
@@ -26,9 +31,9 @@ public class Menu_Admin {
     }
 
     // Imprimir ficheiro lista de filmes
-    public static void imprimirFicheiro(String caminho) throws FileNotFoundException {
+    public static void imprimirFicheiro(String caminhoListaFilmes) throws FileNotFoundException {
 
-        File ficheiro = new File(caminho);
+        File ficheiro = new File(caminhoListaFilmes);
         Scanner sc = new Scanner(ficheiro);
 
         while (sc.hasNextLine()) {
@@ -39,16 +44,16 @@ public class Menu_Admin {
     }
 
 
-    public static String[][] listaParaMatriz(String matriz) throws FileNotFoundException {
+    public static String[][] listaParaMatriz(String caminhoFilmes) throws FileNotFoundException {
 
         // Retirar linha do cabeçalho
-        int listaFilmes = contarLinhas(matriz) -1;
+        int listaFilmes = contarLinhas(caminhoFilmes);
 
         // Criar uma matriz com o tamanho certo
         String[][] matrizCompleta = new String[listaFilmes][8];
 
         // Criar as ferramentas de leitura
-        File ficheiro = new File(matriz);
+        File ficheiro = new File(caminhoFilmes);
         Scanner sc = new Scanner(ficheiro);
 
         // Controlar o numero de filmes
@@ -80,7 +85,7 @@ public class Menu_Admin {
     // Imprimir matriz
     public static void imprimirMatriz(String[][] matriz) {
 
-        for (int i = 0; i < matriz.length; i++) {
+        for (int i = 1; i < matriz.length; i++) {
             for (int j = 0; j < matriz[i].length; j++) {
                 System.out.print(matriz[i][j] + " | ");
             }
@@ -112,8 +117,6 @@ public class Menu_Admin {
             }
         }
 
-
-        System.out.println("\nEstúdios encontrados:");
         for (int i = 0; i < totalUnicos; i++) {
             System.out.println("> " +estudiosUnicos[i]);
         }
@@ -121,7 +124,7 @@ public class Menu_Admin {
 
 
 
-    public static void menu(String[][] matriz, String caminho) {
+    public static void menuAdmin(String[][] matriz, String caminhoFilmes) throws FileNotFoundException {
 
         Scanner input = new Scanner(System.in);
 
@@ -129,48 +132,50 @@ public class Menu_Admin {
 
         do {
 
-            System.out.println("\n\n_*_*_*_*_*_*_*_*_*_ TOP MOVIES _*_*_*_*_*_*_*_*_*_");
-            System.out.println("1. Consultar a lista TOP Movies");
-            System.out.println("2. Visualizar total de Ratings");
-            System.out.println("3. Visualizar todos os estúdios");
-            System.out.println("0. Sair");
+            System.out.println("\n\uD83C\uDFAC\uD83C\uDFAC\uD83C\uDFAC\uD83C\uDFAC THE MOVIE UNIVERSE IMDV \uD83C\uDFAC\uD83C\uDFAC\uD83C\uDFAC\uD83C\uDFAC\n");
+            System.out.println("\u2B50 1. Movie List");
+            System.out.println("\uD83D\uDCDD 2. Total Ratings");
+            System.out.println("\uD83C\uDFA5 3. Studios list");
+            System.out.println("\u274C 0. Exit\n");
 
-            System.out.print("Opção: ");
+            System.out.print("> Select an option: ");
             opcao = input.nextInt();
 
             System.out.println();
 
             switch (opcao) {
                 case 1:
-                    System.out.println("_*_*_*_*_*_ The Best Movies Ever _*_*_*_*_*_ ");
-                    imprimirFicheiro(caminho);
+                    System.out.println("\u2B50\u2B50\u2B50\u2B50 MOVIE LIST \u2B50\u2B50\u2B50\u2B50\n");
+                    imprimirFicheiro(caminhoFilmes);
 
                     break;
 
                 case 2:
-                    System.out.println("_*_*_*_*_*_ Total de Ratings _*_*_*_*_*_ ");
+                    System.out.println("\uD83D\uDCDD\uD83D\uDCDD\uD83D\uDCDD\uD83D\uDCDD TOTAL RATINGS \uD83D\uDCDD\uD83D\uDCDD\uD83D\uDCDD\uD83D\uDCDD\n");
 
                     int totalRatings = matriz.length;
-                    System.out.println("> " + totalRatings);
+                    System.out.println("> " + totalRatings + "Ratings.");
 
                     break;
 
                 case 3:
 
-                    System.out.println("_*_*_*_*_*_ Lista de Estúdios _*_*_*_*_*_ ");
+                    System.out.println("\uD83C\uDFA5\uD83C\uDFA5\uD83C\uDFA5\uD83C\uDFA5 STUDIOS LIST \uD83C\uDFA5\uD83C\uDFA5\uD83C\uDFA5\uD83C\uDFA5\n");
 
                     imprimirEstudiosUnicos(matriz);
-
 
                     break;
 
 
                 case 0:
-                    System.out.println("_*_*_*_*_*_ Encerrar o Programa _*_*_*_*_*_ ");
+                    System.out.println("              \uD83D\uDE0A\uD83D\uDE0A BYE! COME BACK SOON! \uD83D\uDE0A\uD83D\uDE0A");
+                    imprimirFicheiro("IMDV/IMDV_Copyright.txt");
+
                     break;
 
                 default:
-                    System.out.println("!!!!!!!!!!! Opção Inválida !!!!!!!!!!!");
+                    System.out.println("\u26D4 INVALID OPTION \u26D4");
+
                     break;
 
             }
@@ -182,16 +187,10 @@ public class Menu_Admin {
     //Main
     public static void main(String[] args) throws FileNotFoundException {
 
-        String caminho = "IMDV/IMDV.csv";
+        String caminhoListaFilmes = "IMDV/IMDV.csv";
         String[][] matriz = listaParaMatriz("IMDV/IMDV.csv");
 
-        imprimirFicheiro(caminho);
-
-        menu(matriz, caminho);
-
-
-
-
+        menuAdmin(matriz, caminhoListaFilmes);
     }
 }
 
