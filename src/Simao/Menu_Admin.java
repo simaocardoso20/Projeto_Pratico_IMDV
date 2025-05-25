@@ -121,7 +121,7 @@ public class Menu_Admin {
 
 
 
-    public static void menu(String[][] matriz, String caminho) throws FileNotFoundException {
+    public static void menu(String[][] matriz, String caminho) {
 
         Scanner input = new Scanner(System.in);
 
