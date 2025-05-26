@@ -6,30 +6,6 @@ import java.util.Scanner;
 
 public class Menu_Admin {
 
-
-    public static int contarLinhas(String caminho) throws FileNotFoundException {
-
-        File ficheiro = new File(caminho);
-        Scanner sc = new Scanner(ficheiro);
-
-        // Como vou usar esta função e não preciso do cabeçalho, peço para a passar à frente a 1ª linha para depois poder entrar num ciclo while.
-        if (sc.hasNextLine()) {
-            sc.nextLine();
-        }
-
-        int contagemLinhas = 0;
-
-        while (sc.hasNextLine()) {
-            sc.nextLine();
-            contagemLinhas++;
-        }
-
-        sc.close();
-
-        return contagemLinhas;
-
-    }
-
     // Imprimir ficheiro lista de filmes
     public static void imprimirFicheiro(String caminhoListaFilmes) throws FileNotFoundException {
 
@@ -46,22 +22,23 @@ public class Menu_Admin {
 
     public static String[][] listaParaMatriz(String caminhoFilmes) throws FileNotFoundException {
 
-        // Retirar linha do cabeçalho
-        int listaFilmes = contarLinhas(caminhoFilmes);
-
-        // Criar uma matriz com o tamanho certo
-        String[][] matrizCompleta = new String[listaFilmes][8];
-
-        // Criar as ferramentas de leitura
         File ficheiro = new File(caminhoFilmes);
         Scanner sc = new Scanner(ficheiro);
 
-        // Controlar o numero de filmes
+        int contagemLinhas = 0;
+        while (sc.hasNextLine()) {
+            sc.nextLine();
+            contagemLinhas++;
+        }
+        sc.close();
+
+        // Criar a matriz com o tamanho certo com 8 colunas
+        String[][] matrizCompleta = new String[contagemLinhas][8];
+
+        // Ler o ficheiro de novo para preencher a matriz
+        sc = new Scanner(ficheiro);
+
         int numFilmeAtual = 0;
-
-        sc.nextLine();
-
-        // Ler o ficheiro linha à linha
         while (sc.hasNextLine()) {
             String linha = sc.nextLine();
             String[] linhaSeparada = linha.split(";");
@@ -70,23 +47,21 @@ public class Menu_Admin {
                 matrizCompleta[numFilmeAtual][i] = linhaSeparada[i];
             }
 
-            // Adicionar um filme a atual variável
             numFilmeAtual++;
-
         }
 
         sc.close();
 
-
-        // Devolve a matriz com o conteúdo do ficheiro
         return matrizCompleta;
     }
+
 
     // Imprimir matriz
     public static void imprimirMatriz(String[][] matriz) {
 
-        for (int i = 1; i < matriz.length; i++) {
-            for (int j = 0; j < matriz[i].length; j++) {
+        // Removi a 1ª coluna (começar em j=1) porque achei que visualmente tornava a matriz mais confusa para o cliente.
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 1; j < matriz[i].length; j++) {
                 System.out.print(matriz[i][j] + " | ");
             }
             System.out.println();
@@ -123,7 +98,6 @@ public class Menu_Admin {
     }
 
 
-
     public static void menuAdmin(String[][] matriz, String caminhoFilmes) throws FileNotFoundException {
 
         Scanner input = new Scanner(System.in);
@@ -134,7 +108,7 @@ public class Menu_Admin {
 
             System.out.println("\n\uD83C\uDFAC\uD83C\uDFAC\uD83C\uDFAC\uD83C\uDFAC THE MOVIE UNIVERSE IMDV \uD83C\uDFAC\uD83C\uDFAC\uD83C\uDFAC\uD83C\uDFAC\n");
             System.out.println("\u2B50 1. Movie List");
-            System.out.println("\uD83D\uDCDD 2. Total Ratings");
+            System.out.println("\uD83D\uDCAC 2. Total Ratings");
             System.out.println("\uD83C\uDFA5 3. Studios list");
             System.out.println("\u274C 0. Exit\n");
 
@@ -151,11 +125,12 @@ public class Menu_Admin {
                     break;
 
                 case 2:
-                    System.out.println("\uD83D\uDCDD\uD83D\uDCDD\uD83D\uDCDD\uD83D\uDCDD TOTAL RATINGS \uD83D\uDCDD\uD83D\uDCDD\uD83D\uDCDD\uD83D\uDCDD\n");
-
-                    int totalRatings = matriz.length;
-                    System.out.println("> " + totalRatings + "Ratings.");
-
+                    System.out.println("\uD83D\uDCAC\uD83D\uDCAC\uD83D\uDCAC\uD83D\uDCAC TOTAL RATINGS \uD83D\uDCAC\uD83D\uDCAC\uD83D\uDCAC\uD83D\uDCAC\n");
+                    // Removi a 1ª linha da matriz que é o cabeçalho para não ser contabilizado no total de ratings, uma vez que cada rating corresponde a uma linha da matriz.
+                    int totalRatings = matriz.length - 1;
+                    System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
+                    System.out.println("      \u2B50 " + totalRatings + " Ratings" + " \u2B50");
+                    System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
                     break;
 
                 case 3:
@@ -170,7 +145,7 @@ public class Menu_Admin {
                 case 0:
                     System.out.println("              \uD83D\uDE0A\uD83D\uDE0A BYE! COME BACK SOON! \uD83D\uDE0A\uD83D\uDE0A");
                     imprimirFicheiro("IMDV/IMDV_Copyright.txt");
-
+                    System.exit(0); // Tive que usar este código porque sempre que fechava o programa, ele entrava no menu do Cliente.
                     break;
 
                 default:
@@ -184,7 +159,6 @@ public class Menu_Admin {
     }
 
 
-    //Main
     public static void main(String[] args) throws FileNotFoundException {
 
         String caminhoListaFilmes = "IMDV/IMDV.csv";

@@ -6,20 +6,47 @@ import java.util.Scanner;
 
 public class Login {
 
-    // Simao.Login Admin
+    public static boolean escolherUtilizador(Scanner sc) throws FileNotFoundException {
+        while (true) {
+            System.out.print("\n\uD83C\uDFAC Enter user role (ADMIN || CLIENT): ");
+            String tipoUtilizador = sc.nextLine();
+
+            if (tipoUtilizador.equalsIgnoreCase("admin")) {
+                while (!loginAdmin(sc)) {
+                    System.out.println("\n\u274C Invalid username or password. Please try again.\n");
+                }
+                return true;
+
+            } else if (tipoUtilizador.equalsIgnoreCase("client")) {
+                registoCliente(sc);
+
+                String caminhoFilmes = "IMDV/IMDV.csv";
+                String caminhoQuiz = "IMDV/IMDV_Quiz2.csv";
+                String[][] matriz = Menu_Admin.listaParaMatriz(caminhoFilmes);
+                Menu_Cliente.menuCliente(matriz, caminhoFilmes);
+
+                return true;
+
+            } else {
+                System.out.println("\u274C Invalid user type. Please try again.");
+                // repete o ciclo
+            }
+        }
+    }
+
 
     public static boolean loginAdmin(Scanner sc) throws FileNotFoundException {
-        System.out.print("Username: ");
+        System.out.print("\uD83D\uDE0E Username: ");
         String username = sc.nextLine();
 
-        System.out.print("Password: ");
+        System.out.print("\uD83D\uDD12 Password: ");
         String password = sc.nextLine();
 
         if (validarAcessoAdmin(username, password)) {
-            System.out.println("Simao.Login efetuado com sucesso.");
+            System.out.println("\n*-*-*-*-*-* LOGIN SUCCESSFUL *-*-*-*-*-*");
             return true;
         } else {
-            System.out.println("Username ou Password inválido\n");
+
             return false;
         }
     }
@@ -50,53 +77,34 @@ public class Login {
         return false;
     }
 
-    // Registar novo cliente
 
-    public static void registarCliente(Scanner sc) throws FileNotFoundException {
+    public static void registoCliente(Scanner sc) throws FileNotFoundException {
 
-            System.out.println("*_*_*_*_*_* Registar Utilizador *_*_*_*_*_*");
+        System.out.println("\n*_*_*_*_*_* CREATE ACCOUNT *_*_*_*_*_*\n");
 
-            System.out.print("Insira o seu nome: ");
-            String nome = sc.nextLine();
+        System.out.print("\uD83D\uDC64 Name: ");
+        String nome = sc.nextLine();
 
-            System.out.print("Insira o seu contacto: ");
-            String contacto = sc.nextLine();
+        System.out.print("\uD83D\uDCDE Phone Number: ");
+        String contacto = sc.nextLine();
 
-            System.out.print("Insira o seu email: ");
-            String email = sc.nextLine();
+        System.out.print("\u2709 Email: ");
+        String email = sc.nextLine();
 
-            // Apresentar mensagem de sucesso e os dados inseridos pelo utilizador
-            System.out.println("\n------------------------------");
-            System.out.println("Utilizador Inserido com Sucesso: " + nome + " | " + contacto + " | " + email);
-            System.out.println("------------------------------\n");
-        }
-
-
-        public static void main (String[]args) throws FileNotFoundException {
-
-
-            // Criação do Scanner - Vamos ler inputs do utilizador
-            Scanner sc = new Scanner(System.in);
-
-            // Perguntar ao utilizador
-            System.out.print("Tipo de Utilizador (ADMIN || CLIENTE): ");
-            String tipoUtilizador = sc.nextLine();
-
-            if (tipoUtilizador.equalsIgnoreCase("admin")) {
-
-                while (!loginAdmin(sc)) {
-                    System.out.println("O login falhou. Tente novamente.");
-                }
-
-            } else if (tipoUtilizador.equalsIgnoreCase("cliente")) {
-                registarCliente(sc);
-
-            } else {
-                System.out.println("Tipo de utilizador inválido.");
-            }
-
-
-            sc.close();
-        }
+        // Apresentar mensagem de sucesso e os dados inseridos pelo utilizador
+        System.out.println("\n-------------------------------------------------------------------------------");
+        System.out.println("\u2705 Successfully registered: " + nome + " | " + contacto + " | " + email);
+        System.out.println("-------------------------------------------------------------------------------\n");
     }
+
+
+    public static void main(String[] args) throws FileNotFoundException {
+        Scanner sc = new Scanner(System.in);
+        escolherUtilizador(sc);
+
+        sc.close();
+    }
+}
+
+
 

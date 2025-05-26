@@ -8,7 +8,11 @@ import java.util.Scanner;
 import static Simao.Menu_Admin.listaParaMatriz;
 
 public class Menu_Cliente {
-
+    /**
+     * Função que determina qual o estúdio com melhor média de ratings.
+     * Compara os estúdios com base na média dos seus ratings e imprime o nome do estúdio com melhor média e o respetivo valor.
+     * @param matriz Matriz onde cada linha representa um filme e cada coluna contém informações sobre esse filme.
+     */
     public static void melhorRating(String[][] matriz) {
 
         // A variável melhorMedia inicia a 0. Uma vez que todos os ratings são maiores do que 0, as médias também elas serão superiores e
@@ -45,10 +49,15 @@ public class Menu_Cliente {
             }
         }
         System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
-        System.out.println("     " + melhorEstudio + " (Average rating: " + melhorMedia + ")");
+        System.out.println("  \u2B50 " + melhorEstudio + " (Average rating: " + melhorMedia + ")" + " \u2B50");
         System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
     }
 
+    /**
+     * Função que determina qual o estúdio com pior média de ratings.
+     * Compara os estúdios com base na média dos seus ratings e imprime o nome do estúdio com pior média e o respetivo valor.
+     * @param matriz Matriz onde cada linha representa um filme e cada coluna contém informações sobre esse filme.
+     */
     public static void piorRating(String[][] matriz) {
 
         // Neste caso, a variável melhorMedia inicia a 10. Uma vez que todos os ratings são inferiores a 10, as médias também elas serão inferiores
@@ -81,11 +90,16 @@ public class Menu_Cliente {
             }
         }
         System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
-        System.out.println("      " + piorEstudio + " (Average rating: " + piorMedia + ")");
+        System.out.println("  \u2B50 " + piorEstudio + " (Average rating: " + piorMedia + ")" + " \u2B50");
         System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
 
     }
 
+
+    /**
+     * Função que imprime o nome e o rating do último filme adicionado à lista de filmes. Mostra o último review inserido na lista.
+     * @param matriz Matriz onde cada linha representa um filme e cada coluna contém informações sobre esse filme.
+     */
     public static void ultimoReview(String[][] matriz) {
 
         // Declarei a variável ultimaLinha para saber qual é a última linha da matriz. Comprimento total de linhas -1.
@@ -94,10 +108,17 @@ public class Menu_Cliente {
         // Vou imprimir apenas as colunas (nome e rating) assumindo que as colunas da matriz não vão mudar, contudo sempre
         // que adicionarem linhas à matriz, os valores impressos serão atualizados para a última linha (-1).
         System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
-        System.out.println("        " + matriz[ultimaLinha][1] + " - " + matriz[ultimaLinha][2]);
+        System.out.println("        \u2B50 " + matriz[ultimaLinha][1] + " - " + matriz[ultimaLinha][2] + " \u2B50");
         System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
     }
 
+
+    /**
+     * Função que lê um ficheiro de texto contendo perguntas de escolha múltipla. Corrige as respostas inseridas pelo utilizador
+     * e calcula uma pontuação final.
+     * @param caminhoQuiz Caminho para o ficheiro CSV que contém o quiz.
+     * @throws FileNotFoundException Se o ficheiro externo (IMDV_Quiz2.csv) não for encontrado.
+     */
     public static void quiz(String caminhoQuiz) throws FileNotFoundException {
 
         Scanner ficheiro = new Scanner(new File(caminhoQuiz));
@@ -163,6 +184,11 @@ public class Menu_Cliente {
 
     }
 
+
+    /**
+     * Função que permite ao utilizador escolher um estúdio cinematográfico e, em seguida, imprime todos os filmes desse estúdio organizados por categoria.
+     * @param matriz Matriz onde cada linha representa um filme e cada coluna contém informações sobre esse filme.
+     */
     public static void imprimirCategoriaEstudio(String[][] matriz) {
         Scanner input = new Scanner(System.in);
 
@@ -177,7 +203,7 @@ public class Menu_Cliente {
         boolean encontrou;
 
         do {
-            System.out.print("\n \uD83C\uDFAF Choose a studio: ");
+            System.out.print("\n \uD83C\uDFAF Choose a Studio: ");
             procurarEstudio = input.nextLine();
 
             encontrou = false;
@@ -227,6 +253,11 @@ public class Menu_Cliente {
         }
     }
 
+
+    /**
+     * Função que permite ao utilizador escolher uma categoria e, em seguida, imprime todos os filmes dessa categoria organizados por Estúdios.
+     * @param matriz Matriz onde cada linha representa um filme e cada coluna contém informações sobre esse filme.
+     */
     public static void imprimirFilmeCategoria(String[][] matriz) {
         Scanner input = new Scanner(System.in);
 
@@ -259,7 +290,7 @@ public class Menu_Cliente {
 
         int escolha = -1;
         do {
-            System.out.print("\n\uD83C\uDFAF Choose a category: ");
+            System.out.print("\n\uD83C\uDFAF Choose a Category: ");
             String entrada = input.nextLine();
 
             try {
@@ -321,7 +352,13 @@ public class Menu_Cliente {
     }
 
 
-
+    /**
+     * Função permite aceder a várias funcionalidades do programa relacionadas com filmes através de um menu interativo
+     * destinado ao utilizador.
+     * @param matriz Matriz onde cada linha representa um filme e cada coluna contém informações sobre esse filme.
+     * @param caminhoFilmes Caminho para o ficheiro CSV que contém os dados dos filmes.
+     * @throws FileNotFoundException Se algum ficheiro externo (ficheiros txt do catálogo gráfico ou IMDV_Quiz2.csv) não for encontrado.
+     */
     public static void menuCliente(String[][] matriz, String caminhoFilmes) throws FileNotFoundException {
 
         Scanner input = new Scanner(System.in);
@@ -348,6 +385,7 @@ public class Menu_Cliente {
 
             switch (opcao) {
                 case 1:
+                    // Mantive a 1ª linha da matriz que é o cabeçalho para ajudar o cliente na análise dos resultados.
                     System.out.println("\u2B50\u2B50\u2B50\u2B50 MOVIE LIST \u2B50\u2B50\u2B50\u2B50\n");
                     Menu_Admin.imprimirMatriz(matriz);
                     break;
@@ -428,7 +466,7 @@ public class Menu_Cliente {
                 case 0:
                     System.out.println("              \uD83D\uDE0A\uD83D\uDE0A BYE! COME BACK SOON! \uD83D\uDE0A\uD83D\uDE0A");
                     Menu_Admin.imprimirFicheiro("IMDV/IMDV_Copyright.txt");
-
+                    System.exit(0); // Tive que usar este código porque sempre que fechava o programa, ele entrava no menu do Admin.
                     break;
 
                 default:
@@ -441,6 +479,12 @@ public class Menu_Cliente {
         } while (opcao != 0);
     }
 
+
+    /**
+     * Metodo que carrega os dados dos filmes e inicia o menu principal do cliente (IMDV - The Movie Universe).
+     * @param args Argumentos da linha de comandos.
+     * @throws FileNotFoundException Se os ficheiros IMDV.csv ou IMDV_Quiz2.csv não forem encontrados.
+     */
     public static void main(String[] args) throws FileNotFoundException {
 
         String caminhoFilmes= "IMDV/IMDV.csv";
@@ -449,7 +493,6 @@ public class Menu_Cliente {
 
         String[][] matriz = Menu_Admin.listaParaMatriz(caminhoFilmes);
 
-        // Menu principal do Cliente - The Movie Universe IMDV
         menuCliente(matriz, caminhoFilmes);
 
     }
