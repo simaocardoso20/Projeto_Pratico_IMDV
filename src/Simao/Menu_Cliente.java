@@ -53,6 +53,8 @@ public class Menu_Cliente {
         System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
     }
 
+
+
     /**
      * Função que determina qual o estúdio com pior média de ratings.
      * Compara os estúdios com base na média dos seus ratings e imprime o nome do estúdio com pior média e o respetivo valor.
@@ -96,6 +98,7 @@ public class Menu_Cliente {
     }
 
 
+
     /**
      * Função que imprime o nome e o rating do último filme adicionado à lista de filmes. Mostra o último review inserido na lista.
      * @param matriz Matriz onde cada linha representa um filme e cada coluna contém informações sobre esse filme.
@@ -106,11 +109,12 @@ public class Menu_Cliente {
         int ultimaLinha = matriz.length - 1;
 
         // Vou imprimir apenas as colunas (nome e rating) assumindo que as colunas da matriz não vão mudar, contudo sempre
-        // que adicionarem linhas à matriz, os valores impressos serão atualizados para a última linha (-1).
+        // que adicionarem linhas à matriz, os valores impressos serão atualizados para a última linha. A coluna [1] representa o nome do filme e a coluna [2] o Rating.
         System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
         System.out.println("        \u2B50 " + matriz[ultimaLinha][1] + " - " + matriz[ultimaLinha][2] + " \u2B50");
         System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
     }
+
 
 
     /**
@@ -124,27 +128,33 @@ public class Menu_Cliente {
         Scanner ficheiro = new Scanner(new File(caminhoQuiz));
         Scanner input = new Scanner(System.in);
 
+        // Criei variáveis para guardar o valor total da pontuação e o nº total de perguntas
         int totalPontuacao = 0;
         int totalPerguntas = 0;
 
-        // Ignorar a primeira linha (cabeçalho)
+        // Ignorei a primeira linha (cabeçalho) para não atrapalhar nas contas.
         if (ficheiro.hasNextLine()) {
             ficheiro.nextLine();
         }
-
+        // Ler as linhas do ficheiro Quiz e separar a linha a cada ";"
         while (ficheiro.hasNextLine()) {
             String linha = ficheiro.nextLine();
             String[] linhaDividida = linha.split(";");
 
+        // A primeira parte da linha é a pergunta.
             String pergunta = linhaDividida[0];
+
+        // As outras partes separadas por ";" são as opçoes de resposta.
             String[] opcoes = new String[4];
             opcoes[0] = linhaDividida[1];
             opcoes[1] = linhaDividida[2];
             opcoes[2] = linhaDividida[3];
             opcoes[3] = linhaDividida[4];
 
+        // A sexta parte [5] é o número da resposta correta que vou converter em Int
             int respostaCerta = Integer.parseInt(linhaDividida[5]);
 
+        // Apresenta as 4 opções de resposta numeradas de 1 a 4
             System.out.println("" + pergunta);
             for (int i = 0; i < 4; i++) {
                 System.out.println((i + 1) + ". " + opcoes[i]);
@@ -154,6 +164,9 @@ public class Menu_Cliente {
             int resposta = input.nextInt();
             input.nextLine();
 
+            // Verifica se a resposta do utilizador está correta e imprime mensagem consoante se a resposta está certa ou errada. A resposta certa incrementa o total de pontuação.
+            // A "resposta certa -1" é para aceder à posição correta dentro do array caso contrário dava sempre o valor que o utilizador vê no ecrã.
+
             if (resposta == respostaCerta) {
                 System.out.println("✅ Well done, correct!\n");
                 totalPontuacao++;
@@ -161,6 +174,7 @@ public class Menu_Cliente {
                 System.out.println("❌ Sorry, wrong answer. The right one was: " + opcoes[respostaCerta - 1] + "\n");
             }
 
+           // Incrementa o total de perguntas feitas.
             totalPerguntas++;
 
         }
@@ -185,6 +199,7 @@ public class Menu_Cliente {
     }
 
 
+
     /**
      * Função que permite ao utilizador escolher um estúdio cinematográfico e, em seguida, imprime todos os filmes desse estúdio organizados por categoria.
      * @param matriz Matriz onde cada linha representa um filme e cada coluna contém informações sobre esse filme.
@@ -192,30 +207,34 @@ public class Menu_Cliente {
     public static void imprimirCategoriaEstudio(String[][] matriz) {
         Scanner input = new Scanner(System.in);
 
-        // Usei uma função que já tinha para listar todos os estúdios da matriz para facilitar a escolha do utilizador.
+        // Usei uma função que já tinha para listar todos os estúdios da matriz para facilitar a escolha do utilizador. Pelo menos assim pode visualizar quais os estúdios disponíveis para escolha.
         Menu_Admin.imprimirEstudiosUnicos(matriz);
 
         int totalFilmes = matriz.length - 1;
-        String[] categorias = new String[totalFilmes];
-        int qtdCategorias;
+        String[] categorias = new String[totalFilmes]; // Array para guardar categorias únicas do estúdio selecionado.
+        int qtdCategorias; // Variavel que guarda quantas categorias únicas existem para o estúdio selecionado.
 
-        String procurarEstudio;
-        boolean encontrou;
+        String procurarEstudio; // Variável que guarda o nome do estúdio inserido pelo utilizador.
+        boolean estudioEncontrado; // Variável para saber se o filme foi encontrado.
 
         do {
+            // Leitura do nome do estúdio introduzido pelo utilizador.
             System.out.print("\n \uD83C\uDFAF Choose a Studio: ");
             procurarEstudio = input.nextLine();
 
-            encontrou = false;
-            qtdCategorias = 0;
+            estudioEncontrado = false; // Reinicia o estado de encontrado a cada repetição.
+            qtdCategorias = 0; // Reinicia o número de categorias únicas.
 
+            // Ciclo percorre a matriz e procura filmes do estúdio selecionado pelo utilizador na coluna[5].
             for (int i = 1; i < matriz.length; i++) {
-                String estudio = matriz[i][5];
-                String categoria = matriz[i][7];
+                String estudio = matriz[i][5]; // Estúdios
+                String categoria = matriz[i][7]; // Categorias
 
+                // Se encontrou um filme desse estúdio, indica que o estúdio foi encontrado para que o programa prossiga.
                 if (estudio.equalsIgnoreCase(procurarEstudio)) {
-                    encontrou = true;
+                    estudioEncontrado = true;
 
+                // Verifica se a categoria já foi adicionada
                     boolean existe = false;
                     for (int j = 0; j < qtdCategorias; j++) {
                         if (categorias[j].equalsIgnoreCase(categoria)) {
@@ -223,35 +242,41 @@ public class Menu_Cliente {
                             break;
                         }
                     }
+                    // Se a categoria ainda não estiver guardada, adiciona-a e incrementa.
                     if (!existe) {
                         categorias[qtdCategorias] = categoria;
                         qtdCategorias++;
                     }
                 }
             }
-            if (!encontrou) {
+            // Se não encontrou nenhum filme associado ao estúdio inserido, avisa o utilizador e repete o ciclo.
+            if (!estudioEncontrado) {
                 System.out.println(" \u274C No movies found for this studio. Please try again.\u274C");
             }
 
-        } while (!encontrou);
+            // Entretanto continua até o utilizador escolher um estúdio válido
+        } while (!estudioEncontrado);
 
         System.out.println("\n***** " + procurarEstudio + " *****\n");
 
         // Imprime filmes agrupados por categoria
-        for (int c = 0; c < qtdCategorias; c++) {
-            System.out.println("__ " + categorias[c] + " __");
+        for (int cat = 0; cat < qtdCategorias; cat++) {
+            System.out.println("__ " + categorias[cat] + " __");
             for (int i = 1; i < matriz.length; i++) {
                 String estudio = matriz[i][5];
                 String categoria = matriz[i][7];
                 String titulo = matriz[i][1];
 
-                if (estudio.equalsIgnoreCase(procurarEstudio) && categoria.equalsIgnoreCase(categorias[c])) {
+                // Mostra o título se o estúdio e categoria coincidirem
+                if (estudio.equalsIgnoreCase(procurarEstudio) && categoria.equalsIgnoreCase(categorias[cat])) {
                     System.out.println(titulo);
                 }
             }
+            // Adicionei linha em branco entre categorias para visualmente ficar mais organizado.
             System.out.println();
         }
     }
+
 
 
     /**
@@ -265,64 +290,68 @@ public class Menu_Cliente {
         String[] categorias = new String[totalFilmes];
         int qtdCategorias = 0;
 
-        // Coletar categorias únicas
+        // Ciclo para encontrar todas as categorias únicas na matriz (coluna 7).
         for (int i = 1; i < matriz.length; i++) {
             String categoria = matriz[i][7];
             boolean existe = false;
+
+            // Ciclo para verificar se a categoria já foi adicionada à lista.
             for (int j = 0; j < qtdCategorias; j++) {
                 if (categorias[j].equalsIgnoreCase(categoria)) {
                     existe = true;
                     break;
                 }
             }
+            // Se a categoria ainda não existe no array, adiciona-a e incrementa o contador.
             if (!existe) {
                 categorias[qtdCategorias] = categoria;
                 qtdCategorias++;
             }
         }
 
-        // Mostrar categorias para o usuário escolher
+        // Mostrar categorias para o utilizador escolher, a imagem do que fiz anteriormente com os nomes dos estúdios.
         System.out.println("\n*-*-* LIST OF AVAILABLE CATEGORIES *-*-*\n");
         for (int i = 0; i < qtdCategorias; i++) {
             System.out.println((i + 1) + " - " + categorias[i]);
         }
+        // Optei por colocar uma opção para sair do "menu" se é que posso chamá-lo assim. Mas aqui é só o print.
         System.out.println("20 - Return to main menu");
 
-        int escolha = -1;
+        int escolha = -1; // Inicializa a variável que vai guardar a escolha do utilizador (começa inválida).
+
         do {
             System.out.print("\n\uD83C\uDFAF Choose a Category: ");
             String entrada = input.nextLine();
 
-            try {
-                escolha = Integer.parseInt(entrada);
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please try again.");
-                continue;
-            }
+            escolha = Integer.parseInt(entrada);
 
             if (escolha == 20) {
-                return;
+                return; // sai do metodo
             }
 
             if (escolha < 1 || escolha > qtdCategorias) {
                 System.out.println("Invalid category number. Try again.");
-                escolha = -1;
+                escolha = -1; // É para forçar a repetir o ciclo.
             }
-        } while (escolha == -1);
+
+        } while (escolha == -1); // Repete o ciclo enquanto a escolha for inválida (-1).
 
         String categoriaEscolhida = categorias[escolha - 1];
 
-        // Para essa categoria, mostrar estúdios e filmes
-        // Vamos agrupar os filmes por estúdio:
+        // Para que a categoria possa mostrar estúdios e filmes, vão ser agrupados os filmes por estúdio.
         String[] estudios = new String[totalFilmes];
-        int qtdEstudios = 0;
+        int qtdEstudios = 0; // Contador de estúdios únicos encontrados.
 
-        // Primeiro coletar estúdios que tenham filmes nessa categoria
+
+        // Percorrer a matriz para encontrar estúdios que tenham filmes na categoria escolhida.
         for (int i = 1; i < matriz.length; i++) {
             String estudio = matriz[i][5];
             String categoria = matriz[i][7];
+
             if (categoria.equalsIgnoreCase(categoriaEscolhida)) {
                 boolean existe = false;
+
+                // Verificar se o estúdio já está na lista
                 for (int j = 0; j < qtdEstudios; j++) {
                     if (estudios[j].equalsIgnoreCase(estudio)) {
                         existe = true;
@@ -336,14 +365,17 @@ public class Menu_Cliente {
             }
         }
 
-        // Agora para cada estúdio, listar os filmes na categoria escolhida
-        for (int e = 0; e < qtdEstudios; e++) {
-            System.out.println("\n**** " + estudios[e] + " ****");
+        // Para cada estúdio encontrado, imprimir os filmes daquela categoria que pertencem ao estúdio.
+        for (int est = 0; est < qtdEstudios; est++) {
+            System.out.println("\n**** " + estudios[est] + " ****");
+
             for (int i = 1; i < matriz.length; i++) {
                 String estudio = matriz[i][5];
                 String categoria = matriz[i][7];
                 String titulo = matriz[i][1];
-                if (estudio.equalsIgnoreCase(estudios[e]) && categoria.equalsIgnoreCase(categoriaEscolhida)) {
+
+                // Se o filme pertence ao estúdio e à categoria selecionada é impresso.
+                if (estudio.equalsIgnoreCase(estudios[est]) && categoria.equalsIgnoreCase(categoriaEscolhida)) {
                     System.out.println("  > " + titulo);
                 }
             }
@@ -352,10 +384,11 @@ public class Menu_Cliente {
     }
 
 
+
     /**
-     * Função permite aceder a várias funcionalidades do programa relacionadas com filmes através de um menu interativo
+     * Função que permite aceder a várias funcionalidades do programa relacionadas com filmes através de um menu interativo
      * destinado ao utilizador.
-     * @param matriz Matriz onde cada linha representa um filme e cada coluna contém informações sobre esse filme.
+     * @param matriz Matriz onde cada linha representa um filme e cada coluna contém diferentes atributos sobre os filmes em análise.
      * @param caminhoFilmes Caminho para o ficheiro CSV que contém os dados dos filmes.
      * @throws FileNotFoundException Se algum ficheiro externo (ficheiros txt do catálogo gráfico ou IMDV_Quiz2.csv) não for encontrado.
      */
@@ -478,6 +511,7 @@ public class Menu_Cliente {
 
         } while (opcao != 0);
     }
+
 
 
     /**
