@@ -6,7 +6,12 @@ import java.util.Scanner;
 
 public class Menu_Admin {
 
-    // Imprimir ficheiro lista de filmes
+    /**
+     * Função que serve para imprimir na consola o ficheiro com a lista dos filmes.
+     * @param caminhoListaFilmes Caminho para o ficheiro CSV que contém a lista com os dados dos filmes.
+     * @throws FileNotFoundException Se o ficheiro externo (IMDV.csv) não for encontrado.
+     */
+
     public static void imprimirFicheiro(String caminhoListaFilmes) throws FileNotFoundException {
 
         File ficheiro = new File(caminhoListaFilmes);
@@ -19,7 +24,12 @@ public class Menu_Admin {
 
     }
 
-
+    /**
+     * Função que lê o ficheiro CSV linha a linha até ao final e converte-o numa matriz completa com 8 colunas.
+     * @param caminhoFilmes Caminho para o ficheiro CSV que contém a lista com os dados dos filmes.
+     * @return Devolve uma matriz de Strings, em que cada linha corresponde a um filme e cada coluna a um dos seus 8 atributos.
+     * @throws FileNotFoundException Se o ficheiro externo (IMDV.csv) não for encontrado.
+     */
     public static String[][] listaParaMatriz(String caminhoFilmes) throws FileNotFoundException {
 
         File ficheiro = new File(caminhoFilmes);
